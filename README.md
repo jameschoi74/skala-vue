@@ -1,6 +1,8 @@
 # skala-vue
 
-Full-Stack Engineering — Frontend Framework: Vue.js 교육과정 실습 저장
+> 배포: https://skala-vue-lovat.vercel.app/
+
+Full-Stack Engineering — Frontend Framework: Vue.js 교육과정 실습
 
 교재의 Code Challenge / Hands on을 진행하면서 작성한 코드와, **개인별 Customization 내역**을 단원별로 기록.
 
@@ -132,7 +134,7 @@ src/
 `practices/form/` : `VModelBasic`, `FormElements`, `VModelModifiers`
 `practices/style/` : `VueStyle`
 
-- **`assets/challenge.css` 직접 작성** — 114p가 `@import '@/assets/challenge.css'`를 하지만 교재에 파일 내용이 없어 버튼 스타일을 직접 정의했다.
+- **`assets/challenge.css` 직접 작성** — 114p가 `@import '@/assets/challenge.css'`로 참조하는 외부 CSS를 버튼 스타일로 직접 정의했다.
 - **`[v-cloak]` 규칙을 전역 CSS로 이동** — 90p는 `<style scoped>` 안에 두지만, scoped는 `[v-cloak][data-v-*]`로 컴파일되고 `data-v-*`는 **렌더링 이후에 붙기 때문에** "로딩 전에 숨긴다"는 목적이 성립하지 않는다. `main.css`로 옮기고 이유를 주석으로 남겼다.
 
 ### 116p — Hands on: Weather Mockup
@@ -170,7 +172,7 @@ src/
 
 `practices/component/` : `LifecycleChild`, `LifecycleParent`
 
-- **`<template>` 직접 작성** — 교재 154p에는 `<script setup>`만 있고 템플릿이 없다.
+- **`<template>` 직접 작성** — 154p의 훅 코드에 맞춰 화면 영역을 직접 구성했다.
 - `onUnmounted`를 관찰하려면 컴포넌트를 파괴할 주체가 필요해 **부모/자식 2개 파일로 분리**하고, 부모에 `v-if` 토글을 두었다.
 - `onUpdated` 확인을 위해 3초 타이머와 별개로 **수동 +1 버튼**을 추가했다.
 
@@ -254,7 +256,7 @@ src/
 - **246p** — `el-card`(header/footer 슬롯) + `el-input` + `el-switch` + `el-button`. `ElMessage`의 error / warning / success 3분기가 순서대로 발동하는 것을 확인했다.
 - **247p** — `el-input-number`(수량) + `el-rate`(별점). 교재 템플릿 목록에는 `el-input-number`만 적혀 있으나 `productRate` 변수가 있으므로 `el-rate`를 함께 배치했다.
 - **248p** — `ElMessageBox.confirm` + `el-progress`. 게이지가 0% → 40% → … 단계적으로 오르고 완료 메시지가 뜨는 것까지 확인했다.
-- **`startDownload` 로직 수정** — 교재 원문은 `if (isDownloading.value) return (isDownloading.value = true)`로 되어 있어, 이미 진행 중일 때 플래그를 오히려 다시 켜고 반환한다. 의도대로 `if (isDownloading.value) return` / `isDownloading.value = true` 두 문장으로 분리했다.
+- **중복 실행 방지** — `if (isDownloading.value) return` 으로 먼저 빠져나간 뒤 `isDownloading.value = true`를 세우도록 두 문장으로 나눴다. 진행 중에 버튼을 다시 눌러도 타이머가 겹쳐 돌지 않는다.
 - **`ElMessageBox` type 값 수정** — 교재는 `type: 'danger'`를 쓰지만 Element Plus가 지원하는 값은 `success` / `info` / `warning` / `error` 4가지뿐이라 아이콘이 렌더링되지 않는다. `error`로 바꿔 경고 아이콘(`el-message-box-icon--error`)이 표시되는 것을 확인했다.
 - **타이머 정리 추가** — `setInterval` 진행 중에 컴포넌트가 사라지면 타이머가 남으므로, 155p에서 배운 `onUnmounted`에 `clearInterval`을 넣었다. (교재 예제에는 없음)
 
@@ -363,7 +365,7 @@ dist/
 
 - `npm run build` → `dist/` 약 1.4MB 생성. 라우트별 청크가 분리되어 있고
   파일명 해시로 캐시가 무효화된다.
-- 배포 URL: _(배포 후 기재)_
+- 배포 URL: **https://skala-vue-lovat.vercel.app/** (Vercel)
 - **배포처에 환경변수를 별도로 등록해야 한다.** `.env.local`은 저장소에 포함되지 않으므로
   호스팅 대시보드(Vercel 등)의 Environment Variables에 `VITE_OPENWEATHER_API_KEY`를
   같은 이름으로 넣어야 날씨 데이터가 표시된다. 등록하지 않으면 화면은 뜨지만
@@ -371,19 +373,16 @@ dist/
 
 ---
 
-## 교재와 다르게 처리한 부분 (실습 중 확인한 내용)
+## 실습 중 확인한 내용
 
-| 슬라이드 | 교재 내용                                                                        | 실제 동작 / 대응                                                                                                                                                                                                                          |
-| -------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 74p, 76p | `<h3>일반 보간법 {{}} 사용 결과:</h3>`                                           | 컴파일은 되지만 빈 문자열로 렌더되어 중괄호가 화면에서 사라짐 → `v-pre` 적용                                                                                                                                                              |
-| 90p      | `[v-cloak]`을 `<style scoped>`에 정의                                            | `data-v-*`가 렌더링 후 붙으므로 목적이 깨짐 → 전역 CSS로 이동                                                                                                                                                                             |
-| 114p     | `@import '@/assets/challenge.css'`                                               | 교재에 파일 내용 없음 → 직접 작성                                                                                                                                                                                                         |
-| 154p     | Lifecycle Hook Example                                                           | `<template>` 누락 → 직접 작성                                                                                                                                                                                                             |
-| 159p     | props 수정 시 "에러가 발생된다"                                                  | 예외가 던져지지 않고 **콘솔 경고 후 대입이 무시**됨 (`try/catch`로 잡히지 않음)                                                                                                                                                           |
-| 248p     | `startDownload`의 `if (isDownloading.value) return (isDownloading.value = true)` | 진행 중일 때 플래그를 다시 켜고 반환하는 코드. 두 문장으로 분리해야 의도대로 동작                                                                                                                                                         |
-| 248p     | `ElMessageBox` `type: 'danger'`                                                  | Element Plus 미지원 값이라 아이콘이 렌더링되지 않음 → `error`로 교체                                                                                                                                                                      |
-| 271p     | "백틱(`) 기호와 공백이 어떻게 자동 변환되었는지 확인"                            | 공백·세미콜론만 정리되고 **백틱은 변환되지 않는다.** Prettier는 템플릿 리터럴을 일반 문자열로 바꾸지 않음                                                                                                                                 |
-| 87p, 88p | `:key`에 고유값 강조                                                             | 정작 배열 예제는 `:key="index"` 사용 (124p 삭제 기능과 조합 시 안티패턴)                                                                                                                                                                  |
-| 205p     | 구조분해할당 시 "반응형이 유실될 수 있다"                                        | 확인 결과 **항상 끊긴다.** `const { count } = store`는 ref가 아닌 그 시점의 원시값 복사본이라 이후 `store.count`가 5로 올라가도 `count`는 3에 고정된다. `storeToRefs(store)`로 감싸면 `isRef: true`인 객체가 반환되어 값이 따라 올라간다. |
+| 슬라이드 | 교재 내용                                             | 실행 결과                                                                                                                                                                                                                          |
+| -------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 74p, 76p | `<h3>일반 보간법 {{}} 사용 결과:</h3>`                | 컴파일은 되지만 빈 문자열로 렌더되어 중괄호가 화면에서 사라짐 → `v-pre` 적용                                                                                                                                                              |
+| 90p      | `[v-cloak]`을 `<style scoped>`에 정의                 | `data-v-*`가 렌더링 후 붙으므로 목적이 깨짐 → 전역 CSS로 이동                                                                                                                                                                             |
+| 159p     | props 수정 시 "에러가 발생된다"                       | 예외가 던져지지 않고 **콘솔 경고 후 대입이 무시**됨 (`try/catch`로 잡히지 않음)                                                                                                                                                           |
+| 248p     | `ElMessageBox` `type: 'danger'`                       | Element Plus 미지원 값이라 아이콘이 렌더링되지 않음 → `error`로 교체                                                                                                                                                                      |
+| 271p     | "백틱(`) 기호와 공백이 어떻게 자동 변환되었는지 확인" | 공백·세미콜론만 정리되고 **백틱은 변환되지 않는다.** Prettier는 템플릿 리터럴을 일반 문자열로 바꾸지 않음                                                                                                                                 |
+| 87p, 88p | `:key`에 고유값 강조                                  | 정작 배열 예제는 `:key="index"` 사용 (124p 삭제 기능과 조합 시 안티패턴)                                                                                                                                                                  |
+| 205p     | 구조분해할당 시 "반응형이 유실될 수 있다"             | 확인 결과 **항상 끊긴다.** `const { count } = store`는 ref가 아닌 그 시점의 원시값 복사본이라 이후 `store.count`가 5로 올라가도 `count`는 3에 고정된다. `storeToRefs(store)`로 감싸면 `isRef: true`인 객체가 반환되어 값이 따라 올라간다. |
 
 ---
