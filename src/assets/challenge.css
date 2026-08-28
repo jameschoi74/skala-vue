@@ -1,0 +1,20 @@
+/* 114p) 외부 CSS 파일 실습용.
+   교재에는 파일 이름만 나오고 내용이 없어서 직접 작성한 버튼 스타일 뭉치. */
+.btn-external {
+  background-color: #42b983;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-external:hover {
+  background-color: #33a06f;
+}
+
+.btn-external:active {
+  transform: translateY(1px);
+}

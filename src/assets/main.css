@@ -1,0 +1,87 @@
+@import './base.css';
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+}
+
+/* --- 실습용 추가 스타일 --- */
+@media (min-width: 1024px) {
+  /* create-vue 기본값이 2단 그리드라 실습 화면이 반으로 쪼개져서 1단으로 되돌림 */
+  #app {
+    display: block;
+  }
+}
+
+.practice-section {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* 90p) v-cloak 전용 규칙.
+   scoped(<style scoped>)에 두면 [v-cloak][data-v-xxx]로 컴파일되는데
+   data-v-* 속성은 Vue가 렌더링한 뒤에야 붙으므로 "로딩 전에 숨긴다"는 목적이 깨진다.
+   반드시 전역 CSS에 둘 것. */
+[v-cloak] {
+  display: none !important;
+}
+
+/* 131p~ ) watch 예제들이 쓰는 모니터 박스. 교재에 CSS가 없어 직접 정의. */
+.monitor {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border-left: 4px solid #42b983;
+  background-color: var(--color-background-mute);
+  font-size: 14px;
+}
+
+.monitor.target {
+  border-left-color: #e17055;
+}
+
+/* 174p~ ) Slot 예제들이 쓰는 카드/패널. 교재에 CSS가 없어 직접 정의. */
+.base-card {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.display-panel {
+  padding: 10px 12px;
+  border-radius: 6px;
+  background-color: var(--color-background-mute);
+  font-size: 14px;
+}
